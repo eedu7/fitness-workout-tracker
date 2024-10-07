@@ -1,6 +1,10 @@
 from fastapi import APIRouter, HTTPException, status
+from fastapi.params import Depends
 
-router: APIRouter = APIRouter()
+from dependencies.authentication import AuthenticationRequired
+from schemas.exercise import ExerciseCreate
+
+router: APIRouter = APIRouter(dependencies=[Depends(AuthenticationRequired)])
 
 
 @router.get("/")
@@ -20,12 +24,8 @@ async def get_exercise(exercise_id):
 
 
 @router.post("/")
-async def create_new_exercise():
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Not Implemented",
-
-    )
+async def create_new_exercise(exercise_data: ExerciseCreate):
+    return exercise_data
 
 
 @router.post("/{exercise_id}")
@@ -41,5 +41,4 @@ async def delete_exercise(exercise_id: int):
     raise HTTPException(
         status_code=status.HTTP_501_NOT_IMPLEMENTED,
         detail="Not Implemented",
-
     )

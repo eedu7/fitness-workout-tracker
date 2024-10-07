@@ -4,7 +4,9 @@ from fastapi.responses import JSONResponse
 
 from middleware.authentication import AuthBackend, AuthenticationMiddleware
 
+from .exercise import router as exercise_router
 from .user import router as user_router
+from .workout import router as workout_router
 
 app = FastAPI(
     title="Fitness Workout Tracker",
@@ -54,3 +56,5 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 app.include_router(user_router, prefix="/user", tags=["User"])
+app.include_router(workout_router, prefix="/workout", tags=["Workout Management"])
+app.include_router(exercise_router, prefix="/exercise", tags=["Exercise"])

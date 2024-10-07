@@ -2,15 +2,12 @@ from typing import Annotated, List
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
 
 from config import config
+from crud.user import UserCrud
 from db import get_async_session
 from dependencies.authentication import AuthenticationRequired
-from models import User
 from schemas.user import UserLogin, UserRegister, UserResponse
-from utils.jwt_handler import encode_token
-from utils.password import hash_password, verify_password
 
 router: APIRouter = APIRouter()
 
@@ -32,7 +29,6 @@ async def get_users(
     session: AsyncSession = Depends(get_async_session),
 ):
     """
-
     Fetch a list of users with optional pagination.
 
     Parameters:
@@ -40,13 +36,12 @@ async def get_users(
     - limit: The maximum number of records to return (default: 10)
 
     Returns:
-
     - A list of user records.
     """
     limit = min(limit, config.PAGINATION_MAX_LIMIT)
+    user_crud = UserCrud(session=session)
 
-    result = await session.execute(select(User).offset(skip).limit(limit))
-    users = result.scalars().all()
+    users = await user_crud.get_all(skip=skip, limit=limit)
 
     if not users:
         raise HTTPException(
@@ -63,36 +58,18 @@ async def create_user(
     """
     Create a new user in the database.
 
-
     Parameters:
     - user_data: Data required to register a user (name, email, password)
 
     Returns:
     - The created user data (id, name, email).
     """
-    existing_user = await session.execute(select(User).filter_by(email=user_data.email))
-    if existing_user.scalars().first():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered."
-        )
-
-    new_user = User(
-        name=user_data.name,
-        email=user_data.email,
-        password=hash_password(user_data.password),
-    )
-
-    session.add(new_user)
+    user_crud = UserCrud(session=session)
 
     try:
-        await session.commit()
-        await session.refresh(new_user)
-    except Exception:
-        await session.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User with this email already exists.",
-        )
+        new_user = await user_crud.register_user(user_data.dict())
+    except HTTPException as e:
+        raise e  # Re-raise the exception for proper error handling
 
     return new_user
 
@@ -108,29 +85,18 @@ async def login_user(
     - user_data: Data required for user login (email, password)
 
     Returns:
-    - A message indicating successful login and a token
+    - A message indicating successful login and a token.
     """
-    existing_user = await session.execute(select(User).filter_by(email=user_data.email))
-    user = existing_user.scalars().first()
+    user_crud = UserCrud(session=session)
 
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not registered."
+    try:
+        token = await user_crud.login_user(
+            email=user_data.email, password=user_data.password
         )
-
-    if not verify_password(user_data.password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password."
-        )
+    except HTTPException as e:
+        raise e  # Re-raise the exception for proper error handling
 
     return {
         "message": "Login successful",
-        "token": {
-            "access_token": encode_token(
-                {"user_id": user.id},
-            ),
-            "refresh_token": encode_token(
-                {"user_id": user.id, "sub": "refresh"},
-            ),
-        },
+        "token": token,
     }
