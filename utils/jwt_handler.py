@@ -15,7 +15,7 @@ def encode_token(payload: dict[str, Any]) -> str:
     payload["exp"] = exp
     token = jwt.encode(
         payload,
-        config.JWT_SECRET,
+        config.JWT_SECRET_KEY,
         algorithm=config.JWT_ALGORITHM,
     )
     return token
@@ -29,7 +29,7 @@ def decode_token(token: str) -> dict:
     try:
         payload = jwt.decode(
             token,
-            config.JWT_SECRET,
+            config.JWT_SECRET_KEY,
             algorithms=[config.JWT_ALGORITHM],
         )
         return payload

@@ -1,6 +1,6 @@
-from select import select
+from typing import Annotated, List
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -12,18 +12,27 @@ from schemas.user import UserLogin, UserRegister, UserResponse
 from utils.jwt_handler import encode_token
 from utils.password import hash_password, verify_password
 
-router = APIRouter()
-
-MAX_LIMIT = 100
+router: APIRouter = APIRouter()
 
 
 @router.get(
-    "/", status_code=status.HTTP_200_OK, dependencies=[Depends(AuthenticationRequired)]
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=List[UserResponse],
+    dependencies=[Depends(AuthenticationRequired)],
 )
 async def get_users(
-    skip: int = 0, limit: int = 10, session: AsyncSession = Depends(get_async_session)
+    skip: Annotated[int, Query(description="Number of records to skip")] = 0,
+    limit: Annotated[
+        int,
+        Query(
+            description=f"Maximum number of records to return. Max Limit is {config.PAGINATION_MAX_LIMIT}"
+        ),
+    ] = 10,
+    session: AsyncSession = Depends(get_async_session),
 ):
     """
+
     Fetch a list of users with optional pagination.
 
     Parameters:
@@ -31,6 +40,7 @@ async def get_users(
     - limit: The maximum number of records to return (default: 10)
 
     Returns:
+
     - A list of user records.
     """
     limit = min(limit, config.PAGINATION_MAX_LIMIT)
@@ -69,16 +79,14 @@ async def create_user(
     new_user = User(
         name=user_data.name,
         email=user_data.email,
-        password=hash_password(
-            user_data.password
-        ),  # Be sure to hash this password in a real app
+        password=hash_password(user_data.password),
     )
 
     session.add(new_user)
 
     try:
         await session.commit()
-        await session.refresh(new_user)  # Refresh to get the generated ID
+        await session.refresh(new_user)
     except Exception:
         await session.rollback()
         raise HTTPException(
@@ -115,7 +123,6 @@ async def login_user(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password."
         )
 
-    # Optionally generate and return a JWT token or similar
     return {
         "message": "Login successful",
         "token": {

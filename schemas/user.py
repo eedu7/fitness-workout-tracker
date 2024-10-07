@@ -19,7 +19,7 @@ class UserBase(BaseModel):
 
 
 class UserRegister(UserBase):
-    password: str = Field(..., min_length=8, max_length=128, examples=["Password123"])
+    password: str = Field(..., min_length=8, max_length=128, examples=["Password@123"])
 
     @field_validator("password")
     def validate_password(cls, value):
@@ -37,7 +37,7 @@ class UserRegister(UserBase):
 
 
 class UserLogin(UserBase):
-    password: str = Field(..., examples=["Password123"])
+    password: str = Field(..., examples=["Password@123"])
 
 
 class UserResponse(UserBase):
