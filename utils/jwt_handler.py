@@ -1,12 +1,12 @@
 import time
-from typing import Any, Tuple
+from typing import Any
 
 from jose import JWTError, jwt
 
 from config import config
 
 
-def encode_token(payload: dict[str, Any]) -> Tuple[str, int]:
+def encode_token(payload: dict[str, Any]) -> str:
     """
     Encode a JWT token with the given payload and return the token along with the expiration time.
     """
@@ -18,7 +18,7 @@ def encode_token(payload: dict[str, Any]) -> Tuple[str, int]:
         config.JWT_SECRET,
         algorithm=config.JWT_ALGORITHM,
     )
-    return token, exp
+    return token
 
 
 def decode_token(token: str) -> dict:

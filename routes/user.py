@@ -6,16 +6,20 @@ from sqlalchemy.future import select
 
 from config import config
 from db import get_async_session
+from dependencies.authentication import AuthenticationRequired
 from models import User
-from schemas.user import UserRegister, UserResponse
-from utils.password import hash_password
+from schemas.user import UserLogin, UserRegister, UserResponse
+from utils.jwt_handler import encode_token
+from utils.password import hash_password, verify_password
 
 router = APIRouter()
 
 MAX_LIMIT = 100
 
 
-@router.get("/", status_code=status.HTTP_200_OK)
+@router.get(
+    "/", status_code=status.HTTP_200_OK, dependencies=[Depends(AuthenticationRequired)]
+)
 async def get_users(
     skip: int = 0, limit: int = 10, session: AsyncSession = Depends(get_async_session)
 ):
@@ -83,3 +87,43 @@ async def create_user(
         )
 
     return new_user
+
+
+@router.post("/login", status_code=status.HTTP_200_OK)
+async def login_user(
+    user_data: UserLogin, session: AsyncSession = Depends(get_async_session)
+):
+    """
+    Login user by email and password.
+
+    Parameters:
+    - user_data: Data required for user login (email, password)
+
+    Returns:
+    - A message indicating successful login and a token
+    """
+    existing_user = await session.execute(select(User).filter_by(email=user_data.email))
+    user = existing_user.scalars().first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not registered."
+        )
+
+    if not verify_password(user_data.password, user.password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password."
+        )
+
+    # Optionally generate and return a JWT token or similar
+    return {
+        "message": "Login successful",
+        "token": {
+            "access_token": encode_token(
+                {"user_id": user.id},
+            ),
+            "refresh_token": encode_token(
+                {"user_id": user.id, "sub": "refresh"},
+            ),
+        },
+    }
