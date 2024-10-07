@@ -16,5 +16,5 @@ class UserLogin(UserBase):
 
 
 
-class UserResponse(BaseModel):
+class UserResponse(UserBase):
     id: int = Field(..., examples=[1])
