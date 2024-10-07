@@ -12,9 +12,9 @@ class BaseConfig(BaseSettings):
 
 
 class Config(BaseConfig):
-    MYSQL_URL: str | None = os.getenv('MYSQL_URL')
-    JWT_SECRET_KEY: str | None = os.getenv('JWT_SECRET_KEY')
-    JWT_ALGORITHM: str | None = os.getenv('JWT_ALGORITHM')
+    MYSQL_URL: str | None = os.getenv("MYSQL_URL")
+    JWT_SECRET_KEY: str | None = os.getenv("JWT_SECRET_KEY")
+    JWT_ALGORITHM: str | None = os.getenv("JWT_ALGORITHM")
 
 
 config: Config = Config()

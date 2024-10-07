@@ -14,7 +14,5 @@ async def root():
         content={
             "Title": "Fitness Workout Tracker",
             "Version": "1.0.0",
-
-
-        }
+        },
     )
