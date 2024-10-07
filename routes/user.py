@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+from config import config
 from db import get_async_session
 from models import User
 from schemas.user import UserRegister, UserResponse
@@ -28,7 +29,7 @@ async def get_users(
     Returns:
     - A list of user records.
     """
-    limit = min(limit, MAX_LIMIT)
+    limit = min(limit, config.PAGINATION_MAX_LIMIT)
 
     result = await session.execute(select(User).offset(skip).limit(limit))
     users = result.scalars().all()

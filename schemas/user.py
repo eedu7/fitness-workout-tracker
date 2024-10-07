@@ -45,3 +45,7 @@ class UserResponse(UserBase):
 
     class Config:
         orm_mode = True
+
+
+class CurrentUser(BaseModel):
+    id: int | None = Field(None, examples=[1])
