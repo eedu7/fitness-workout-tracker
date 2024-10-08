@@ -112,7 +112,9 @@ class ExerciseCrud(BaseCrud[Exercise]):
                 detail=f"Error on fetching exercise with name: {name}: {str(e)}",
             )
 
-    async def create_exercise(self, name: str, description: str, category_id: int, muscle_group_id: int) -> Exercise:
+    async def create_exercise(
+        self, name: str, description: str, category_id: int, muscle_group_id: int
+    ) -> Exercise:
         """
         Creates a new Exercise instance.
 
@@ -140,7 +142,7 @@ class ExerciseCrud(BaseCrud[Exercise]):
                     "name": name,
                     "description": description,
                     "category_id": category_id,
-                    "muscle_group_id": muscle_group_id
+                    "muscle_group_id": muscle_group_id,
                 }
             )
             return new_exercise
@@ -151,8 +153,12 @@ class ExerciseCrud(BaseCrud[Exercise]):
             )
 
     async def update_exercise(
-        self, exercise_id: int, name: str | None = None, description: str | None = None,
-            category_id: int | None = None, muscle_group_id: int | None = None
+        self,
+        exercise_id: int,
+        name: str | None = None,
+        description: str | None = None,
+        category_id: int | None = None,
+        muscle_group_id: int | None = None,
     ) -> Exercise:
         """
         Updates an existing Exercise instance.
