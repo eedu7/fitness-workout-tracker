@@ -20,7 +20,9 @@ class MuscleGroupCrud(BaseCrud[MuscleGroup]):
         """
         super().__init__(MuscleGroup, session)
 
-    async def get_all_muscle_group(self, skip: int = 0, limit: int = 20) -> List[MuscleGroup]:
+    async def get_all_muscle_group(
+        self, skip: int = 0, limit: int = 20
+    ) -> List[MuscleGroup]:
         """Retrieve all muscle groups with optional pagination.
 
         Args:
@@ -131,7 +133,10 @@ class MuscleGroupCrud(BaseCrud[MuscleGroup]):
             )
 
     async def update_muscle_group(
-        self, muscle_group_id: int, name: str, description: str
+        self,
+        muscle_group_id: int,
+        name: str | None = None,
+        description: str | None = None,
     ) -> MuscleGroup:
         """Update an existing muscle group.
 
@@ -149,7 +154,7 @@ class MuscleGroupCrud(BaseCrud[MuscleGroup]):
         """
         try:
             await self.get_by_id(muscle_group_id)  # Checking if muscle group exists
-            data: dict[str, Any] = {}
+            data = {}
 
             if name:
                 data["name"] = name

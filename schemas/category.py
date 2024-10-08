@@ -1,4 +1,6 @@
 from pydantic import BaseModel, Field
+
+
 class CategoryCreateData(BaseModel):
     name: str = Field(..., examples=["Endurance"])
     description: str = Field(
