@@ -1,3 +1,4 @@
+from dataclasses import field
 from typing import Any, List
 
 from fastapi import HTTPException, status
@@ -113,7 +114,7 @@ class MuscleGroupCrud(BaseCrud[MuscleGroup]):
             HTTPException: If an error occurs during the creation process, a 500 error is raised.
         """
         try:
-            muscle_group: MuscleGroup = await self.get_by_name(name)
+            muscle_group: MuscleGroup = await self.get_by(field="name", value=name)
             if muscle_group:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
