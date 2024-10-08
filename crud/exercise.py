@@ -112,13 +112,15 @@ class ExerciseCrud(BaseCrud[Exercise]):
                 detail=f"Error on fetching exercise with name: {name}: {str(e)}",
             )
 
-    async def create_exercise(self, name: str, description: str) -> Exercise:
+    async def create_exercise(self, name: str, description: str, category_id: int, muscle_group_id: int) -> Exercise:
         """
         Creates a new Exercise instance.
 
         Args:
             name (str): The name of the exercise.
             description (str): A description of the exercise.
+            category_id (int): A ID of the category of the exercise.
+            muscle_group_id (int): A ID of the muscle group of the exercise.
 
         Raises:
             HTTPException: If an exercise with the same name already exists or on other errors.
@@ -137,6 +139,8 @@ class ExerciseCrud(BaseCrud[Exercise]):
                 {
                     "name": name,
                     "description": description,
+                    "category_id": category_id,
+                    "muscle_group_id": muscle_group_id
                 }
             )
             return new_exercise
@@ -147,7 +151,8 @@ class ExerciseCrud(BaseCrud[Exercise]):
             )
 
     async def update_exercise(
-        self, exercise_id: int, name: str | None = None, description: str | None = None
+        self, exercise_id: int, name: str | None = None, description: str | None = None,
+            category_id: int | None = None, muscle_group_id: int | None = None
     ) -> Exercise:
         """
         Updates an existing Exercise instance.
@@ -156,6 +161,8 @@ class ExerciseCrud(BaseCrud[Exercise]):
             exercise_id (int): The ID of the exercise to update.
             name (str | None): The new name of the exercise (if provided).
             description (str | None): The new description of the exercise (if provided).
+            category_id (int): The ID of the category of the exercise (if provided).
+            muscle_group_id (int): The ID of the muscle group of the exercise (if provided).
 
         Raises:
             HTTPException: If the exercise with the given ID is not found or on other errors.
@@ -169,6 +176,10 @@ class ExerciseCrud(BaseCrud[Exercise]):
                 data["name"] = name
             if description:
                 data["description"] = description
+            if category_id:
+                data["category_id"] = category_id
+            if muscle_group_id:
+                data["muscle_group_id"] = muscle_group_id
 
             await self.get_by_id(exercise_id)  # Checking if exercise exists
 
