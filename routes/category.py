@@ -6,6 +6,7 @@ from crud.category import CategoryCrud
 from db import get_async_session
 from schemas.category import CategoryCreateData, CategoryUpdateData, CategoryPartialUpdateData
 
+# TODO: add authentication required dependency
 router: APIRouter = APIRouter()
 
 

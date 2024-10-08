@@ -19,7 +19,7 @@ class MuscleGroupCrud(BaseCrud[MuscleGroup]):
         """
         super().__init__(MuscleGroup, session)
 
-    async def get_all(self, skip: int = 0, limit: int = 20) -> List[MuscleGroup]:
+    async def get_all_muscle_group(self, skip: int = 0, limit: int = 20) -> List[MuscleGroup]:
         """Retrieve all muscle groups with optional pagination.
 
         Args:
@@ -46,7 +46,7 @@ class MuscleGroupCrud(BaseCrud[MuscleGroup]):
                 detail=f"Error on fetching all muscle groups: {str(e)}",
             )
 
-    async def get_by_id(self, muscle_group_id: int) -> MuscleGroup:
+    async def get_muscle_group_by_id(self, muscle_group_id: int) -> MuscleGroup:
         """Retrieve a muscle group by its ID.
 
         Args:
