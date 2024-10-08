@@ -8,7 +8,7 @@ class Category(Base):
     __tablename__ = "category"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), index=True, nullable=False)
+    name: Mapped[str] = mapped_column(String(255), index=True, nullable=False, unique=True)
     description: Mapped[str] = mapped_column(String(255), nullable=True)
 
     def __repr__(self) -> str:

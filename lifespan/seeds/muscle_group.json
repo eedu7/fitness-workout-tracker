@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Chest",
+    "description": "Includes the pectoral muscles, targeting upper body strength."
+  },
+  {
+    "name": "Back",
+    "description": "Focuses on the muscles of the upper, middle, and lower back, including the lats and traps."
+  },
+  {
+    "name": "Legs",
+    "description": "Targets the quadriceps, hamstrings, and calves for lower body strength."
+  },
+  {
+    "name": "Shoulders",
+    "description": "Works the deltoid muscles to improve shoulder strength and stability."
+  },
+  {
+    "name": "Arms",
+    "description": "Includes exercises for biceps, triceps, and forearms."
+  },
+  {
+    "name": "Core",
+    "description": "Strengthens the abdominal muscles and lower back for stability and posture."
+  },
+  {
+    "name": "Glutes",
+    "description": "Focuses on the muscles of the buttocks, important for lower body power and strength."
+  }
+]

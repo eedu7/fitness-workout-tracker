@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Strength Training",
+    "description": "Exercises aimed at increasing muscle strength and endurance."
+  },
+  {
+    "name": "Cardio",
+    "description": "Exercises focused on cardiovascular endurance."
+  },
+  {
+    "name": "Flexibility",
+    "description": "Exercises designed to improve range of motion and flexibility."
+  },
+  {
+    "name": "Balance",
+    "description": "Exercises that improve balance and stability."
+  },
+  {
+    "name": "HIIT",
+    "description": "High-Intensity Interval Training workouts for maximum fat burn."
+  },
+  {
+    "name": "Core",
+    "description": "Exercises that target the core muscles for stability and strength."
+  },
+  {
+    "name": "Plyometrics",
+    "description": "Exercises involving explosive movements to improve power."
+  }
+]
