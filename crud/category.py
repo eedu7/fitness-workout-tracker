@@ -121,7 +121,7 @@ class CategoryCrud(BaseCrud[Category]):
         - HTTPException: If a category with the same name already exists (400) or on server error (500).
         """
         try:
-            category = await self.get_category_by_name(name)
+            category = await self.get_by(field="name", value=name)
             if category:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -173,7 +173,7 @@ class CategoryCrud(BaseCrud[Category]):
                 detail=f"Error on updating category. {e}",
             )
 
-    async def delete_category(self, category_id: int) -> JSONResponse:
+    async def delete_category(self, category_id: int) -> bool:
         """
         Deletes a category from the database.
 
@@ -189,10 +189,10 @@ class CategoryCrud(BaseCrud[Category]):
         try:
             await self.get_category_by_id(category_id)
 
-            await self.delete(category_id)
-            return JSONResponse(
-                status_code=status.HTTP_204_NO_CONTENT, content="Category deleted"
-            )
+            deleted = await self.delete(category_id)
+            if deleted:
+                return True
+            return False
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 176f8cbf8c0f
+Revision ID: 8f0947d56f7f
 Revises:
-Create Date: 2024-10-08 09:19:01.935090
+Create Date: 2024-10-08 13:27:05.899191
 
 """
 
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "176f8cbf8c0f"
+revision: str = "8f0947d56f7f"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,7 +27,7 @@ def upgrade() -> None:
         sa.Column("description", sa.String(length=255), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(op.f("ix_category_name"), "category", ["name"], unique=False)
+    op.create_index(op.f("ix_category_name"), "category", ["name"], unique=True)
     op.create_table(
         "muscle_group",
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
@@ -35,9 +35,7 @@ def upgrade() -> None:
         sa.Column("description", sa.String(length=255), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_muscle_group_name"), "muscle_group", ["name"], unique=False
-    )
+    op.create_index(op.f("ix_muscle_group_name"), "muscle_group", ["name"], unique=True)
     op.create_table(
         "users",
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
@@ -52,14 +50,14 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("name", sa.String(length=255), nullable=False),
         sa.Column("description", sa.Text(), nullable=False),
-        sa.Column("category", sa.Integer(), nullable=False),
-        sa.Column("muscle_group", sa.Integer(), nullable=False),
+        sa.Column("category_id", sa.Integer(), nullable=False),
+        sa.Column("muscle_group_id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(
-            ["category"],
+            ["category_id"],
             ["category.id"],
         ),
         sa.ForeignKeyConstraint(
-            ["muscle_group"],
+            ["muscle_group_id"],
             ["muscle_group.id"],
         ),
         sa.PrimaryKeyConstraint("id"),

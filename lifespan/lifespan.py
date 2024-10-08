@@ -29,9 +29,8 @@ async def seed_categories(db: AsyncSession):
 
 async def seed_muscle_group(db: AsyncSession):
     """
-    Seed muscle groups asynchronously if they don't exist.'
+    Seed muscle groups asynchronously if they don't exist.
     """
-
     MUSCLE_GROUPS = BASE_DIR / "seeds/muscle_group.json"
     with open(MUSCLE_GROUPS, "r") as file:
         muscle_groups = json.load(file)
@@ -44,8 +43,8 @@ async def seed_muscle_group(db: AsyncSession):
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI):
-    async for db in get_async_session():
+async def lifespan(app: FastAPI):
+    # Create a session and seed data during app startup
+    async with get_async_session() as db:
         await seed_categories(db)
         await seed_muscle_group(db)
-        yield

@@ -2,9 +2,9 @@ from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from lifespan import lifespan
 from middleware.authentication import AuthBackend, AuthenticationMiddleware
 
+from .category import router as category_router
 from .exercise import router as exercise_router
 from .user import router as user_router
 from .workout import router as workout_router
@@ -12,7 +12,6 @@ from .workout import router as workout_router
 app = FastAPI(
     title="Fitness Workout Tracker",
     version="1.0.0",
-    lifespan=lifespan,
 )
 
 # Add CORS middleware
@@ -23,7 +22,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 app.add_middleware(AuthenticationMiddleware, backend=AuthBackend())
 
 
@@ -57,6 +55,8 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 
+# Register routes
 app.include_router(user_router, prefix="/user", tags=["User"])
 app.include_router(workout_router, prefix="/workout", tags=["Workout Management"])
 app.include_router(exercise_router, prefix="/exercise", tags=["Exercise"])
+app.include_router(category_router, prefix="/category", tags=["Category"])
