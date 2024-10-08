@@ -21,10 +21,7 @@ async def seed_categories(db: AsyncSession):
         categories = json.load(file)
 
     for category in categories:
-        db_category = Category(
-            **category
-
-        )
+        db_category = Category(**category)
         await db.merge(db_category)
 
     await db.commit()
@@ -40,9 +37,7 @@ async def seed_muscle_group(db: AsyncSession):
         muscle_groups = json.load(file)
 
     for muscle_group in muscle_groups:
-        db_muscle_group = MuscleGroup(
-            **muscle_group
-        )
+        db_muscle_group = MuscleGroup(**muscle_group)
         await db.merge(db_muscle_group)
 
     await db.commit()
