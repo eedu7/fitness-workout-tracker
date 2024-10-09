@@ -11,6 +11,9 @@ class WorkoutStatus(StrEnum):
 
 
 class WorkoutBase(BaseModel):
+    workout_plan_id: int | None = Field(
+        None, description="Workout plan ID", examples=[1]
+    )
     sets: int | None = Field(None, description="Number of sets", examples=[1])
     repetitions: int | None = Field(
         None, description="Number of repetitions", examples=[1]

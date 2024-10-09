@@ -10,6 +10,9 @@ class WorkoutExercise(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     description: Mapped[str] = mapped_column(Text, nullable=True)
+    workout_plan_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("workout_plans.id"), nullable=False
+    )
     exercise_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("exercises.id"), nullable=False
     )
