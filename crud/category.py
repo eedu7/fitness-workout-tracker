@@ -1,5 +1,4 @@
 from fastapi import HTTPException, status
-from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from crud.base import BaseCrud
@@ -10,7 +9,8 @@ class CategoryCrud(BaseCrud[Category]):
     """
     A CRUD (Create, Read, Update, Delete) interface for managing Category entities.
 
-    Inherits from BaseCrud, providing methods to interact with the Category model in the database.
+    Inherits from Bas
+    eCrud, providing methods to interact with the Category model in the database.
     """
 
     def __init__(self, session: AsyncSession) -> None:
