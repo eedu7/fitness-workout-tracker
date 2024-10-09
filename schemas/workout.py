@@ -12,9 +12,13 @@ class WorkoutStatus(StrEnum):
 
 class WorkoutBase(BaseModel):
     sets: int | None = Field(None, description="Number of sets", examples=[1])
-    repetitions: int | None = Field(None, description="Number of repetitions", examples=[1])
+    repetitions: int | None = Field(
+        None, description="Number of repetitions", examples=[1]
+    )
     weight: float | None = Field(None, description="Workout weight", examples=[190])
-    status: WorkoutStatus | None = Field(None, description="Workout status", examples=[WorkoutStatus.TO_BE_STARTED])
+    status: WorkoutStatus | None = Field(
+        None, description="Workout status", examples=[WorkoutStatus.TO_BE_STARTED]
+    )
 
 
 class WorkoutCreate(WorkoutBase):

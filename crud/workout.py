@@ -22,7 +22,6 @@ class WorkoutCrud(BaseCrud[WorkoutExercise]):
         """
         super().__init__(WorkoutExercise, session)
 
-
     async def get_workout_by_id(self, workout_id: int) -> WorkoutExercise:
         """
         Retrieve a workout by its ID from the database.
@@ -72,7 +71,9 @@ class WorkoutCrud(BaseCrud[WorkoutExercise]):
                 detail=f"Error creating workout: {str(e)}",
             )
 
-    async def update_workout(self, workout_id: int, workout_data: Dict[str, Any]) -> WorkoutExercise:
+    async def update_workout(
+        self, workout_id: int, workout_data: Dict[str, Any]
+    ) -> WorkoutExercise:
         """
         Update an existing workout by its ID.
 
@@ -87,7 +88,9 @@ class WorkoutCrud(BaseCrud[WorkoutExercise]):
             HTTPException: If the workout is not found or if an error occurs during the update process.
         """
         try:
-            updated_workout: WorkoutExercise = await self.update(workout_id, workout_data)
+            updated_workout: WorkoutExercise = await self.update(
+                workout_id, workout_data
+            )
             if not updated_workout:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
