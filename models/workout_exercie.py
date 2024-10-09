@@ -1,5 +1,3 @@
-from enum import StrEnum
-
 from sqlalchemy import Enum, Float, ForeignKey, Integer, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
