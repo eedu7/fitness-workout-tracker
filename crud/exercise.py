@@ -113,7 +113,7 @@ class ExerciseCrud(BaseCrud[Exercise]):
             )
 
     async def create_exercise(
-        self, name: str, description: str, category_id: int, muscle_group_id: int
+            self, name: str, description: str, category_id: int, muscle_group_id: int
     ) -> Exercise:
         """
         Creates a new Exercise instance.
@@ -131,7 +131,7 @@ class ExerciseCrud(BaseCrud[Exercise]):
             Exercise: The newly created Exercise instance.
         """
         try:
-            exercise = await self.get_by_name(name=name)
+            exercise = await self.get_by("name", name)
             if exercise:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -153,12 +153,12 @@ class ExerciseCrud(BaseCrud[Exercise]):
             )
 
     async def update_exercise(
-        self,
-        exercise_id: int,
-        name: str | None = None,
-        description: str | None = None,
-        category_id: int | None = None,
-        muscle_group_id: int | None = None,
+            self,
+            exercise_id: int,
+            name: str | None = None,
+            description: str | None = None,
+            category_id: int | None = None,
+            muscle_group_id: int | None = None,
     ) -> Exercise:
         """
         Updates an existing Exercise instance.
