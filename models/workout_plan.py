@@ -7,16 +7,16 @@ from db import Base
 
 
 class WorkoutPlan(Base):
-    __tablename__ = "workout_plan"
+    __tablename__ = "workout_plans"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), null=False)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     to_start: Mapped[DateTime] = mapped_column(
-        Integer, nullable=False, default=datetime.now
+        DateTime, nullable=False, default=datetime.now
     )
     to_end: Mapped[DateTime] = mapped_column(
-        Integer,
+        DateTime,
         nullable=True,
     )
 

@@ -27,7 +27,7 @@ class WorkoutPlanCrud(BaseCrud[WorkoutPlan]):
             )
 
     async def create_workout_plan(
-        self, workout_plan_data: Dict[str, Any]
+            self, workout_plan_data: Dict[str, Any]
     ) -> WorkoutPlan:
         try:
             new_workout_plan = await self.create(
@@ -41,7 +41,7 @@ class WorkoutPlanCrud(BaseCrud[WorkoutPlan]):
             )
 
     async def update_workout_plan(
-        self, workout_plan_id: int, workout_plan_data: Dict[str, Any]
+            self, workout_plan_id: int, workout_plan_data: Dict[str, Any]
     ) -> WorkoutPlan:
         try:
             updated_workout: WorkoutPlan = await self.update(
@@ -59,7 +59,7 @@ class WorkoutPlanCrud(BaseCrud[WorkoutPlan]):
                 detail=f"Error updating workout plan: {str(e)}",
             )
 
-    async def delete_workout(self, workout_plan_id: int) -> bool:
+    async def delete_workout_plan(self, workout_plan_id: int) -> bool:
         try:
             deleted: bool = await self.delete(workout_plan_id)
             if not deleted:

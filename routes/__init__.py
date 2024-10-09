@@ -8,8 +8,8 @@ from .category import router as category_router
 from .exercise import router as exercise_router
 from .muscle_group import router as muscle_group_router
 from .user import router as user_router
-from .workout import router as workout_router
-
+from .workout_exercise import router as workout_router
+from .workout_plan import router as workout_plan_router
 app = FastAPI(
     title="Fitness Workout Tracker",
     version="1.0.0",
@@ -62,3 +62,4 @@ app.include_router(workout_router, prefix="/workout", tags=["Workout Management"
 app.include_router(exercise_router, prefix="/exercise", tags=["Exercise"])
 app.include_router(category_router, prefix="/category", tags=["Category"])
 app.include_router(muscle_group_router, prefix="/muscle-group", tags=["MuscleGroup"])
+app.include_router(workout_plan_router, prefix="/workout-plan", tags=["WorkoutPlan"])
