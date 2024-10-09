@@ -13,8 +13,8 @@ class WorkoutExercise(Base):
     exercise_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("exercises.id"), nullable=False
     )
-    sets: Mapped[int] = mapped_column(Integer)
-    repetitions: Mapped[int] = mapped_column(Integer)
+    sets: Mapped[int] = mapped_column(Integer, nullable=True)
+    repetitions: Mapped[int] = mapped_column(Integer, nullable=True)
     weight: Mapped[float] = mapped_column(Float, nullable=True)
     status: Mapped[WorkoutStatus] = mapped_column(
         Enum(WorkoutStatus), default=WorkoutStatus.TO_BE_STARTED

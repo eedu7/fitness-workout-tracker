@@ -22,6 +22,7 @@ class WorkoutCrud(BaseCrud[WorkoutExercise]):
         """
         super().__init__(WorkoutExercise, session)
 
+
     async def get_workout_by_id(self, workout_id: int) -> WorkoutExercise:
         """
         Retrieve a workout by its ID from the database.
