@@ -64,7 +64,7 @@ class WorkoutCrud(BaseCrud[WorkoutExercise]):
             HTTPException: If an error occurs during the creation process.
         """
         try:
-            new_workout = await self.create(**workout_data)  # Fixed recursive call issue
+            new_workout = await self.create(workout_data)  # Fixed recursive call issue
             return new_workout
         except Exception as e:
             raise HTTPException(
@@ -87,7 +87,7 @@ class WorkoutCrud(BaseCrud[WorkoutExercise]):
             HTTPException: If the workout is not found or if an error occurs during the update process.
         """
         try:
-            updated_workout: WorkoutExercise = await self.update(workout_id, **workout_data)
+            updated_workout: WorkoutExercise = await self.update(workout_id, workout_data)
             if not updated_workout:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
