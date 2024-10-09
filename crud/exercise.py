@@ -113,7 +113,7 @@ class ExerciseCrud(BaseCrud[Exercise]):
             )
 
     async def create_exercise(
-            self, name: str, description: str, category_id: int, muscle_group_id: int
+        self, name: str, description: str, category_id: int, muscle_group_id: int
     ) -> Exercise:
         """
         Creates a new Exercise instance.
@@ -153,12 +153,12 @@ class ExerciseCrud(BaseCrud[Exercise]):
             )
 
     async def update_exercise(
-            self,
-            exercise_id: int,
-            name: str | None = None,
-            description: str | None = None,
-            category_id: int | None = None,
-            muscle_group_id: int | None = None,
+        self,
+        exercise_id: int,
+        name: str | None = None,
+        description: str | None = None,
+        category_id: int | None = None,
+        muscle_group_id: int | None = None,
     ) -> Exercise:
         """
         Updates an existing Exercise instance.
@@ -187,9 +187,9 @@ class ExerciseCrud(BaseCrud[Exercise]):
             if muscle_group_id:
                 data["muscle_group_id"] = muscle_group_id
 
-            await self.get_by_id(exercise_id)  # Checking if exercise exists
+            await self.get_by_id(exercise_id)
 
-            updated_exercise = await self.update(exercise_id, **data)
+            updated_exercise = await self.update(exercise_id, data)
             return updated_exercise
         except Exception as e:
             raise HTTPException(
