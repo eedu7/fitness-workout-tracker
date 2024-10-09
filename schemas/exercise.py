@@ -21,13 +21,20 @@ class ExerciseCreate(BaseModel):
         orm_mode = True
 
 
-
 class ExerciseUpdate(ExerciseCreate):
     pass
 
 
 class ExercisePartialUpdate(BaseModel):
-    name: str | None = Field(None, description="The name of the exercise.", examples=["Cardio"])
-    description: str | None = Field(None, description="A detailed description of the exercise.")
-    category_id: int | None = Field(None, description="The category id of the exercise.", examples=[1, 2])
-    muscle_group_id: int | None = Field(None, description="The primary muscle group id targeted by the exercise.")
+    name: str | None = Field(
+        None, description="The name of the exercise.", examples=["Cardio"]
+    )
+    description: str | None = Field(
+        None, description="A detailed description of the exercise."
+    )
+    category_id: int | None = Field(
+        None, description="The category id of the exercise.", examples=[1, 2]
+    )
+    muscle_group_id: int | None = Field(
+        None, description="The primary muscle group id targeted by the exercise."
+    )

@@ -7,13 +7,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from crud.exercise import ExerciseCrud
 from db import get_async_session
 from dependencies.authentication import AuthenticationRequired
-from schemas.exercise import ExerciseCreate, ExerciseUpdate, ExercisePartialUpdate
+from schemas.exercise import (ExerciseCreate, ExercisePartialUpdate,
+                              ExerciseUpdate)
 
 router: APIRouter = APIRouter(dependencies=[Depends(AuthenticationRequired)])
 
 
-@router.get("/", summary="Get all exercises", description="Retrieve a list of all exercises with pagination.")
-async def get_all_exercise(skip: int = 0, limit: int = 10, session: AsyncSession = Depends(get_async_session)):
+@router.get(
+    "/",
+    summary="Get all exercises",
+    description="Retrieve a list of all exercises with pagination.",
+)
+async def get_all_exercise(
+    skip: int = 0, limit: int = 10, session: AsyncSession = Depends(get_async_session)
+):
     """
     Retrieves a paginated list of all exercises.
 
@@ -27,9 +34,15 @@ async def get_all_exercise(skip: int = 0, limit: int = 10, session: AsyncSession
     return await exercise_crud.get_all_exercise(skip, limit)
 
 
-@router.get("/{exercise_id}", summary="Get an exercise",
-            description="Retrieve details of a specific exercise by its ID.")
-async def get_exercise(exercise_id: Annotated[int, Path(ge=1)], session: AsyncSession = Depends(get_async_session)):
+@router.get(
+    "/{exercise_id}",
+    summary="Get an exercise",
+    description="Retrieve details of a specific exercise by its ID.",
+)
+async def get_exercise(
+    exercise_id: Annotated[int, Path(ge=1)],
+    session: AsyncSession = Depends(get_async_session),
+):
     """
     Retrieve the details of a specific exercise by its ID.
 
@@ -42,8 +55,14 @@ async def get_exercise(exercise_id: Annotated[int, Path(ge=1)], session: AsyncSe
     return await exercise_crud.get_by_id(exercise_id)
 
 
-@router.post("/", summary="Create a new exercise", description="Create a new exercise with the provided data.")
-async def create_new_exercise(exercise_data: ExerciseCreate, session: AsyncSession = Depends(get_async_session)):
+@router.post(
+    "/",
+    summary="Create a new exercise",
+    description="Create a new exercise with the provided data.",
+)
+async def create_new_exercise(
+    exercise_data: ExerciseCreate, session: AsyncSession = Depends(get_async_session)
+):
     """
     Create a new exercise.
 
@@ -56,11 +75,15 @@ async def create_new_exercise(exercise_data: ExerciseCreate, session: AsyncSessi
     return await exercise_crud.create_exercise(**exercise_data.model_dump())
 
 
-@router.put("/{exercise_id}", summary="Update an exercise", description="Update an existing exercise by its ID.")
+@router.put(
+    "/{exercise_id}",
+    summary="Update an exercise",
+    description="Update an existing exercise by its ID.",
+)
 async def update_exercise(
-        exercise_id: Annotated[int, Path(ge=1)],
-        exercise_data: ExerciseUpdate,
-        session: AsyncSession = Depends(get_async_session)
+    exercise_id: Annotated[int, Path(ge=1)],
+    exercise_data: ExerciseUpdate,
+    session: AsyncSession = Depends(get_async_session),
 ):
     """
     Update an existing exercise with the provided full data.
@@ -72,15 +95,20 @@ async def update_exercise(
         The updated exercise data, or an error if the exercise is not found.
     """
     exercise_crud: ExerciseCrud = ExerciseCrud(session)
-    return await exercise_crud.update_exercise(exercise_id, **exercise_data.model_dump())
+    return await exercise_crud.update_exercise(
+        exercise_id, **exercise_data.model_dump()
+    )
 
 
-@router.patch("/{exercise_id}", summary="Partially update an exercise",
-              description="Update certain fields of an existing exercise by its ID.")
+@router.patch(
+    "/{exercise_id}",
+    summary="Partially update an exercise",
+    description="Update certain fields of an existing exercise by its ID.",
+)
 async def partial_update_exercise(
-        exercise_id: Annotated[int, Path(ge=1)],
-        exercise_data: ExercisePartialUpdate,
-        session: AsyncSession = Depends(get_async_session)
+    exercise_id: Annotated[int, Path(ge=1)],
+    exercise_data: ExercisePartialUpdate,
+    session: AsyncSession = Depends(get_async_session),
 ):
     """
     Partially update an existing exercise with the provided data.
@@ -92,11 +120,20 @@ async def partial_update_exercise(
         The updated exercise data, or an error if the exercise is not found.
     """
     exercise_crud: ExerciseCrud = ExerciseCrud(session)
-    return await exercise_crud.update_exercise(exercise_id, **exercise_data.model_dump(exclude_none=True))
+    return await exercise_crud.update_exercise(
+        exercise_id, **exercise_data.model_dump(exclude_none=True)
+    )
 
 
-@router.delete("/{exercise_id}", summary="Delete an exercise", description="Delete an exercise by its ID.")
-async def delete_exercise(exercise_id: Annotated[int, Path(ge=1)], session: AsyncSession = Depends(get_async_session)):
+@router.delete(
+    "/{exercise_id}",
+    summary="Delete an exercise",
+    description="Delete an exercise by its ID.",
+)
+async def delete_exercise(
+    exercise_id: Annotated[int, Path(ge=1)],
+    session: AsyncSession = Depends(get_async_session),
+):
     """
     Delete an exercise by its ID.
 
